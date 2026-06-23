@@ -1,0 +1,13 @@
+# Render Blueprint — plain Python FastAPI. ~3.5MB bundled data, runs on the FREE plan.
+services:
+  - type: web
+    name: japan-bankcode-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: RAPIDAPI_PROXY_SECRET
+        sync: false

@@ -1,0 +1,57 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Japan Bank & Branch Code API",
+    "description": "Look up Japanese bank codes (4-digit) and branch codes (3-digit), or search banks by name. Returns name plus katakana, hiragana and romaji for 1,100+ banks and 31,000+ branches. Great for bank-account input and financial integrations.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    { "url": "https://japan-bankcode-api.onrender.com" }
+  ],
+  "paths": {
+    "/v1/bank": {
+      "get": {
+        "summary": "Bank code -> bank",
+        "description": "Look up a bank by its 4-digit code.",
+        "parameters": [
+          { "name": "code", "in": "query", "required": true, "schema": { "type": "string", "example": "0001" } }
+        ],
+        "responses": { "200": { "description": "Bank info + branch count" } }
+      }
+    },
+    "/v1/banks": {
+      "get": {
+        "summary": "Search banks by name",
+        "description": "Partial-match search over bank name / katakana / hiragana / romaji.",
+        "parameters": [
+          { "name": "q", "in": "query", "required": true, "schema": { "type": "string", "example": "みずほ" } },
+          { "name": "limit", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 30 } }
+        ],
+        "responses": { "200": { "description": "Matching banks" } }
+      }
+    },
+    "/v1/branch": {
+      "get": {
+        "summary": "Branch code -> branch",
+        "description": "Look up a branch by bank code + branch code.",
+        "parameters": [
+          { "name": "bank", "in": "query", "required": true, "schema": { "type": "string", "example": "0001" } },
+          { "name": "branch", "in": "query", "required": true, "schema": { "type": "string", "example": "001" } }
+        ],
+        "responses": { "200": { "description": "Branch info (with its bank)" } }
+      }
+    },
+    "/v1/branches": {
+      "get": {
+        "summary": "List a bank's branches",
+        "description": "List (and optionally filter by name) the branches of a bank.",
+        "parameters": [
+          { "name": "bank", "in": "query", "required": true, "schema": { "type": "string", "example": "0001" } },
+          { "name": "q", "in": "query", "required": false, "schema": { "type": "string", "example": "新宿" } },
+          { "name": "limit", "in": "query", "required": false, "schema": { "type": "integer", "minimum": 1, "maximum": 500, "default": 50 } }
+        ],
+        "responses": { "200": { "description": "Branches of the bank" } }
+      }
+    }
+  }
+}
